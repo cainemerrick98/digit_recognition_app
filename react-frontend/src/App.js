@@ -9,7 +9,7 @@ function App() {
   return (
     <div className='app-container'>
       <h1>Digit Recogniser</h1>     
-      <RowContainer digits={digits}/>
+      <RowContainer contents={digits}/>
       <DrawableCanvas setDigits={setDigits}/>
     </div>
   );

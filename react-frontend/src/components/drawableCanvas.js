@@ -9,6 +9,7 @@ function DrawableCanvas({setDigits}){
     const imageDataRef = useRef(null)
     const [dimensions, setDimensions] = useState({width:0, height:0})
     const [drawing, setDrawing] = useState(false)
+    const [savedDigits, setSavedDigits] = useState([])
     
     
     /**
@@ -192,14 +193,17 @@ function DrawableCanvas({setDigits}){
         const boundingBox = calculateBoundingBox(imageData)
         const croppedCanvas = document.createElement('canvas')
         const croppedContext = croppedCanvas.getContext('2d')
-        croppedCanvas.width = boundingBox.maxX - boundingBox.minX + 1
-        croppedCanvas.height = boundingBox.maxY - boundingBox.minY + 1
-        croppedContext.drawImage(canvasRef.current, boundingBox.minX, boundingBox.minY, croppedCanvas.width, croppedCanvas.height, 0, 0, croppedCanvas.width, croppedCanvas.height)
+        croppedCanvas.width = boundingBox.maxX - boundingBox.minX
+        croppedCanvas.height = boundingBox.maxY - boundingBox.minY
+        croppedContext.drawImage(canvasRef.current, boundingBox.minX, boundingBox.minY, croppedCanvas.width, croppedCanvas.height, 10, 10, croppedCanvas.width-10, croppedCanvas.height-10,)
         const resizedCanvas = document.createElement('canvas')
         const resizedContext = resizedCanvas.getContext('2d')
         resizedCanvas.width = 28
         resizedCanvas.height = 28
         resizedContext.drawImage(croppedCanvas, 0, 0, croppedCanvas.width, croppedCanvas.height, 0, 0, 28, 28)
+        setSavedDigits((prevDrawings) => {
+            return [...prevDrawings, resizedCanvas]
+        })
         var pixelIntensities =  getPixelIntensities(resizedContext.getImageData(0,0,28,28).data)
         pixelIntensities = reshapePixelIntensities(pixelIntensities)
         return pixelIntensities
@@ -265,6 +269,22 @@ function DrawableCanvas({setDigits}){
             </canvas>
             <button className='recognise-button tool' onClick={recogniseDigit}>Recognise</button>
             <button className='clear-button tool' onClick={clearCanvas}>Clear</button>
+            <div>
+                {savedDigits.map((ele, index) => (
+                    <canvas
+                    style={{border:'1px solid black'}}
+                    key={index}
+                    width={28}
+                    height={28}
+                    ref={ref => {
+                    if (ref) {
+                        const context = ref.getContext('2d');
+                        context.drawImage(ele, 0, 0);
+                    }
+                    }}
+                    />
+                ))}
+            </div>
         </div>
 
     );
