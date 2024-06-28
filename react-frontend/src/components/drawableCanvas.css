@@ -1,0 +1,40 @@
+.drawable-canvas-container{
+    height: 90%;
+    width: 100%;
+}
+
+.drawable-canvas{
+    cursor:pointer;
+    border: 6px solid lightgray;
+    border-radius: 15px;
+}
+
+.tool{
+    float: right;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-right: 5px;
+    width:100px;
+}
+
+.recognise-button{
+    background-color:orange;
+}
+
+.recognise-button:hover{
+    cursor: pointer;
+    background-color:  rgb(186, 121, 0);
+}
+
+.clear-button{
+    background-color:rgb(0, 0, 203);
+}
+
+.clear-button:hover{
+    cursor: pointer;
+    background-color:rgb(1, 1, 113);
+}
+
